@@ -1,0 +1,607 @@
+:root {
+    --bg-color: #2d2a2e;
+    --window-bg: #1e1e1e;
+    --text-color: #fcfcfa;
+    --prompt-color: #a9dc76;
+    --selection-bg: #6272a4;
+    --border-color: #403e41;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.terminal-container {
+    background-color: var(--window-bg);
+    color: var(--text-color);
+    width: 98%;
+    max-width: 1800px;
+    min-width: 1000px;
+    height: 85vh;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Terminal Header */
+.terminal-header {
+    background-color: var(--border-color);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.window-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.window-control {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+}
+
+.control-close {
+    background-color: #ff5f59;
+}
+
+.control-minimize {
+    background-color: #ffbd2e;
+}
+
+.control-maximize {
+    background-color: #28c941;
+}
+
+/* Terminal Content */
+.terminal-content {
+    flex: 1;
+    padding: 24px 40px;
+    overflow-y: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 15px;
+    line-height: 1.2;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.terminal-prompt {
+    display: flex;
+    gap: 8px;
+    margin: 2px 0;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.prompt-symbol {
+    color: var(--prompt-color);
+    user-select: none;
+}
+
+input {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    width: 100%;
+    outline: none;
+}
+
+/* Help Content Styling */
+.help-content {
+    color: var(--text-color);
+}
+
+.help-content h3 {
+    color: #ff6188;
+    margin-bottom: 0.5rem;
+}
+
+.help-content ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.help-content li {
+    margin: 4px 0;
+}
+
+.help-content strong {
+    color: #fc9867;
+}
+
+.terminal-output {
+    padding: 2px 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: #939293;
+    transition: all 0.2s ease;
+}
+
+.command-text {
+    color: #78dce8;
+    margin-left: 8px;
+}
+
+/* Only show blinking cursor on active command line */
+.terminal-prompt:not([readonly]) input::after {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background-color: var(--text-color);
+    margin-left: 4px;
+    animation: blink 1s infinite;
+    vertical-align: middle;
+}
+
+/* Remove cursor from readonly prompts */
+.terminal-prompt[readonly] .command-text::after {
+    display: none;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--window-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #504e51;
+}
+
+/* Animation Styles */
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+.cursor {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background-color: var(--text-color);
+    margin-left: 4px;
+    animation: blink 1s infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Add smooth transitions */
+.terminal-prompt,
+.terminal-output {
+    transition: all 0.2s ease;
+}
+
+/* Command execution animation */
+.command-executing {
+    opacity: 0.7;
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+}
+
+/* Window controls hover effects */
+.window-control {
+    transition: transform 0.2s ease;
+}
+
+.window-control:hover {
+    transform: scale(1.1);
+}
+
+/* Add a subtle hover effect to clickable elements */
+.terminal-container:hover {
+    box-shadow: 0 14px 45px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease;
+}
+
+.terminal-output pre {
+    margin: 0;
+    font-family: 'Fira Code', monospace;
+    color: var(--prompt-color);
+}
+
+.welcome-message {
+    color: var(--prompt-color);
+    margin-bottom: 1rem;
+    white-space: pre;
+}
+
+.matrix-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin: 10px 0;
+    background-color: black;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.matrix-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.matrix-content {
+    width: 100%;
+    text-align: center;
+}
+
+.snake-game {
+    position: relative;
+    width: 400px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.snake-game canvas {
+    background-color: #000;
+    border-radius: 4px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+}
+
+.game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    color: #0F0;
+    text-align: center;
+}
+
+.game-over h3 {
+    margin: 0 0 10px 0;
+}
+
+.high-scores {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: rgba(0, 255, 0, 0.1);
+    border-radius: 4px;
+}
+
+.high-scores h4 {
+    margin: 0 0 10px 0;
+    color: #0F0;
+}
+
+.high-scores ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.high-scores li {
+    margin: 5px 0;
+    font-family: 'Fira Code', monospace;
+}
+
+.retry-button {
+    margin-top: 15px;
+    padding: 8px 16px;
+    background-color: #0F0;
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Fira Code', monospace;
+    transition: all 0.2s ease;
+}
+
+.retry-button:hover {
+    background-color: #0F0;
+    transform: scale(1.05);
+}
+
+.ai-chat-box {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    height: 500px;
+    background-color: var(--window-bg);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.chat-header {
+    padding: 15px;
+    background-color: var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h3 {
+    margin: 0;
+    color: var(--text-color);
+}
+
+.close-button {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 8px 12px;
+    border-radius: 12px;
+    color: var(--text-color);
+}
+
+.message.user {
+    align-self: flex-end;
+    background-color: #2b5278;
+}
+
+.message.assistant {
+    align-self: flex-start;
+    background-color: #383838;
+}
+
+.chat-input {
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: #2a2a2a;
+    color: var(--text-color);
+}
+
+.chat-input button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    background-color: #2b5278;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.chat-input button:hover {
+    background-color: #366391;
+}
+
+.chat-input button:disabled {
+    background-color: #2a2a2a;
+    cursor: not-allowed;
+}
+
+.typing-indicator {
+    display: inline-block;
+    animation: typing 1.5s infinite;
+}
+
+@keyframes typing {
+
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.weather-content {
+    padding: 10px;
+    font-family: 'Fira Code', monospace;
+}
+
+.weather-content pre {
+    line-height: 1.2;
+    margin: 0;
+    padding: 10px 0;
+}
+
+.weather-content p {
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+.hackerman-content pre {
+    font-family: 'Fira Code', monospace;
+    line-height: 1.2;
+    margin: 10px 0;
+    color: #0F0;
+}
+
+.directory-listing {
+    font-family: 'Fira Code', monospace;
+    color: #fcfcfa;
+}
+
+.directory-listing p {
+    margin: 2px 0;
+    padding: 0;
+}
+
+.file-content {
+    color: #fcfcfa;
+    border-left: 2px solid #0F0;
+    padding-left: 10px;
+    margin: 10px 0;
+}
+
+.manual-content {
+    color: #fcfcfa;
+}
+
+.manual-content h3 {
+    color: #0F0;
+    margin-bottom: 10px;
+}
+
+.manual-content ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.manual-content li {
+    margin: 5px 0;
+    font-family: 'Fira Code', monospace;
+}
+
+.hacker-terminal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 1000px;
+    height: 80vh;
+    background-color: #000;
+    border: 2px solid #0F0;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.hacker-terminal .terminal-header {
+    background-color: #0F0;
+    color: #000;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Fira Code', monospace;
+    font-weight: bold;
+}
+
+.hacker-terminal .terminal-content {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    font-family: 'Fira Code', monospace;
+    color: #0F0;
+    background-color: #000;
+}
+
+.hacker-terminal .prompt-symbol {
+    color: #0F0;
+}
+
+.hacker-terminal input {
+    background: transparent;
+    border: none;
+    color: #0F0;
+    font-family: 'Fira Code', monospace;
+    font-size: inherit;
+    outline: none;
+    caret-color: #0F0;
+}
+
+.hacker-terminal .close-button {
+    background: none;
+    border: none;
+    color: #000;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 4px;
+}
+
+.hacker-terminal .close-button:hover {
+    color: #900;
+}
+
+.completion-suggestions {
+    margin: 4px 0;
+    padding: 4px 8px;
+    border-left: 2px solid var(--prompt-color);
+}
+
+.completion-suggestions p {
+    color: var(--prompt-color);
+    margin: 0 0 4px 0;
+}
+
+.suggestions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 4px;
+}
+
+.suggestion {
+    color: #fcfcfa;
+    padding: 2px 4px;
+    font-family: 'Fira Code', monospace;
+}
+
+.suggestion:hover {
+    background-color: rgba(169, 220, 118, 0.1);
+}
