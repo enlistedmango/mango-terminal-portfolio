@@ -605,3 +605,56 @@ input {
 .suggestion:hover {
     background-color: rgba(169, 220, 118, 0.1);
 }
+
+/* Project styling */
+.projects-content {
+    color: var(--text-color);
+}
+
+.projects-content h3 {
+    color: #ff6188;
+    margin-bottom: 1rem;
+}
+
+.project-item {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border-left: 3px solid #a9dc76;
+    background-color: rgba(169, 220, 118, 0.05);
+    border-radius: 0 8px 8px 0;
+}
+
+.project-item h4 {
+    color: #fc9867;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.project-item p {
+    margin: 0.5rem 0;
+    line-height: 1.4;
+}
+
+.project-item a {
+    color: #78dce8;
+    text-decoration: none;
+}
+
+.project-item a:hover {
+    text-decoration: underline;
+}
+
+/* About content styling */
+.about-content {
+    color: var(--text-color);
+}
+
+.about-content h3 {
+    color: #ff6188;
+    margin-bottom: 1rem;
+}
+
+.about-content p {
+    margin: 1rem 0;
+    line-height: 1.5;
+}

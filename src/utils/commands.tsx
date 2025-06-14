@@ -41,32 +41,68 @@ export const commands: CommandsMap = {
 
     about: () => (
         <div className="about-content">
-            <h3>About Me</h3>
+            <h3>About Jamie McCallum</h3>
             <p>
-                I am a passionate software developer with expertise in web development and a love
-                for creating innovative solutions.
+                👋 Hi! I'm Jamie, a passionate software developer who loves building innovative 
+                web applications and exploring cutting-edge technologies. My expertise spans 
+                full-stack development with a particular focus on creating performant, 
+                user-friendly applications.
             </p>
             <p>
-                My journey in tech began with a curiosity about how things work, and that curiosity
-                continues to drive me forward.
+                🚀 My journey in tech began with curiosity about how digital systems work, 
+                which quickly evolved into a passion for problem-solving through code. 
+                I enjoy working with modern technologies like React, TypeScript, and Go, 
+                and I'm always eager to learn new tools that can make development more 
+                efficient and enjoyable.
+            </p>
+            <p>
+                💡 I believe in writing clean, maintainable code and creating solutions 
+                that make a real difference. When I'm not coding, you can find me 
+                exploring new technologies, contributing to open source, or working on 
+                creative projects that push the boundaries of what's possible.
+            </p>
+            <p>
+                📈 I'm currently focused on building scalable web applications and 
+                exploring the intersection of AI and web development. This terminal 
+                portfolio itself is an example of my love for creating unique, 
+                interactive experiences!
             </p>
         </div>
     ),
 
     projects: () => (
         <div className="projects-content">
-            <h3>My Projects</h3>
-            <ul>
-                <li>
-                    <strong>Project 1</strong> - Description of project 1
-                </li>
-                <li>
-                    <strong>Project 2</strong> - Description of project 2
-                </li>
-                <li>
-                    <strong>Project 3</strong> - Description of project 3
-                </li>
-            </ul>
+            <h3>Featured Projects</h3>
+            <div className="project-item">
+                <h4>🖥️ Terminal Portfolio</h4>
+                <p>An interactive terminal-style portfolio built with React and TypeScript. 
+                Features include AI chat integration, weather data, retro games, and hidden easter eggs. 
+                Showcases modern web development with a nostalgic terminal aesthetic.</p>
+                <p><strong>Tech:</strong> React, TypeScript, Express.js, OpenAI API, Vite</p>
+                <p><strong>GitHub:</strong> <a href="https://github.com/enlistedmango/mango-terminal-portfolio" target="_blank" rel="noopener noreferrer">
+                    github.com/enlistedmango/mango-terminal-portfolio
+                </a></p>
+            </div>
+            
+            <div className="project-item">
+                <h4>🚀 [Your Project Name]</h4>
+                <p>Description of your project - what it does, what problem it solves, 
+                what makes it interesting or unique.</p>
+                <p><strong>Tech:</strong> Your tech stack used</p>
+                <p><strong>Link:</strong> Your project link or GitHub repo</p>
+            </div>
+            
+            <div className="project-item">
+                <h4>⚡ [Another Project Name]</h4>
+                <p>Another project description - highlight the key features, 
+                your role, and any notable achievements or challenges overcome.</p>
+                <p><strong>Tech:</strong> Technologies used</p>
+                <p><strong>Link:</strong> Project link or repository</p>
+            </div>
+            
+            <p style={{ marginTop: '20px', fontStyle: 'italic', color: '#a9dc76' }}>
+                💡 Want to see more? Check out my GitHub profile for additional projects and contributions!
+            </p>
         </div>
     ),
 
