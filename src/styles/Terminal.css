@@ -15,6 +15,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Prevent layout shift during initial load */
+    overflow: hidden;
 }
 
 .app {
@@ -30,24 +32,38 @@ body {
 .terminal-container {
     background-color: var(--window-bg);
     color: var(--text-color);
-    width: 98%;
-    max-width: 1800px;
-    min-width: 1000px;
+    width: 95%;
+    max-width: 1200px;
     height: 85vh;
-    border-radius: 10px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    min-height: 600px;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    /* Ensure fixed size from initial render */
+    box-sizing: border-box;
+}
+
+/* Loading state to prevent initial size flash */
+.terminal-loading {
+    /* Maintain dimensions during initial load */
+    min-height: 600px;
+}
+
+.terminal-loading .terminal-content {
+    /* Ensure content area has minimum height during load */
+    min-height: 500px;
 }
 
 /* Terminal Header */
 .terminal-header {
     background-color: var(--border-color);
-    padding: 16px;
+    padding: 16px 24px;
     display: flex;
     align-items: center;
     gap: 8px;
+    min-height: 44px; /* Touch-friendly minimum */
 }
 
 .window-controls {
@@ -56,8 +72,8 @@ body {
 }
 
 .window-control {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
 }
 
@@ -76,12 +92,17 @@ body {
 /* Terminal Content */
 .terminal-content {
     flex: 1;
-    padding: 24px 40px;
+    padding: 24px 32px;
     overflow-y: auto;
-    font-family: 'Fira Code', monospace;
-    font-size: 15px;
-    line-height: 1.2;
+    font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.4;
     animation: fadeIn 0.3s ease-in;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    min-height: 0; /* Allow flex shrinking */
+    /* Prevent content from affecting container size */
+    height: 0; /* Force flex to control height */
+    box-sizing: border-box;
 }
 
 .terminal-prompt {
@@ -90,11 +111,14 @@ body {
     margin: 2px 0;
     align-items: center;
     transition: all 0.2s ease;
+    min-height: 24px; /* Ensure touch-friendly height */
 }
 
 .prompt-symbol {
     color: var(--prompt-color);
     user-select: none;
+    flex-shrink: 0; /* Prevent prompt from shrinking */
+    font-size: inherit;
 }
 
 input {
@@ -105,6 +129,7 @@ input {
     font-size: inherit;
     width: 100%;
     outline: none;
+    min-height: 24px; /* Touch-friendly */
 }
 
 /* Help Content Styling */
@@ -123,7 +148,7 @@ input {
 }
 
 .help-content li {
-    margin: 4px 0;
+    margin: 6px 0; /* Slightly more spacing for mobile */
 }
 
 .help-content strong {
@@ -134,6 +159,7 @@ input {
     padding: 2px 0;
     white-space: pre-wrap;
     word-wrap: break-word;
+    overflow-wrap: break-word; /* Better word breaking */
     color: #939293;
     transition: all 0.2s ease;
 }
@@ -141,6 +167,7 @@ input {
 .command-text {
     color: #78dce8;
     margin-left: 8px;
+    word-break: break-all; /* Prevent overflow on long commands */
 }
 
 /* Only show blinking cursor on active command line */
@@ -162,7 +189,7 @@ input {
 
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -180,12 +207,9 @@ input {
 
 /* Animation Styles */
 @keyframes blink {
-
-    0%,
-    100% {
+    0%, 100% {
         opacity: 1;
     }
-
     50% {
         opacity: 0;
     }
@@ -204,7 +228,6 @@ input {
     from {
         opacity: 0;
     }
-
     to {
         opacity: 1;
     }
@@ -234,20 +257,22 @@ input {
 
 /* Add a subtle hover effect to clickable elements */
 .terminal-container:hover {
-    box-shadow: 0 14px 45px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
     transition: box-shadow 0.3s ease;
 }
 
 .terminal-output pre {
     margin: 0;
-    font-family: 'Fira Code', monospace;
+    font-family: inherit;
     color: var(--prompt-color);
+    overflow-x: auto; /* Allow horizontal scroll for ASCII art */
 }
 
 .welcome-message {
     color: var(--prompt-color);
     margin-bottom: 1rem;
     white-space: pre;
+    overflow-x: auto; /* Handle ASCII art overflow */
 }
 
 .matrix-container {
@@ -273,7 +298,8 @@ input {
 
 .snake-game {
     position: relative;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     margin: 20px auto;
     text-align: center;
 }
@@ -282,6 +308,8 @@ input {
     background-color: #000;
     border-radius: 4px;
     box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+    width: 100%;
+    height: auto;
 }
 
 .game-over {
@@ -294,6 +322,7 @@ input {
     border-radius: 8px;
     color: #0F0;
     text-align: center;
+    max-width: 90%;
 }
 
 .game-over h3 {
@@ -320,19 +349,21 @@ input {
 
 .high-scores li {
     margin: 5px 0;
-    font-family: 'Fira Code', monospace;
+    font-family: inherit;
 }
 
 .retry-button {
     margin-top: 15px;
-    padding: 8px 16px;
+    padding: 12px 20px;
     background-color: #0F0;
     color: #000;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-family: 'Fira Code', monospace;
+    font-family: inherit;
     transition: all 0.2s ease;
+    font-size: 14px;
+    min-height: 44px; /* Touch-friendly */
 }
 
 .retry-button:hover {
@@ -341,11 +372,11 @@ input {
 }
 
 .ai-chat-box {
-    position: absolute;
+    position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 350px;
-    height: 500px;
+    width: 320px;
+    height: 480px;
     background-color: var(--window-bg);
     border-radius: 10px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
@@ -353,6 +384,7 @@ input {
     flex-direction: column;
     overflow: hidden;
     border: 1px solid var(--border-color);
+    z-index: 1000;
 }
 
 .chat-header {
@@ -361,6 +393,7 @@ input {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-height: 44px;
 }
 
 .chat-header h3 {
@@ -374,7 +407,9 @@ input {
     color: var(--text-color);
     font-size: 24px;
     cursor: pointer;
-    padding: 0 5px;
+    padding: 4px 8px;
+    min-height: 32px;
+    min-width: 32px;
 }
 
 .chat-messages {
@@ -417,6 +452,7 @@ input {
     border: 1px solid var(--border-color);
     background-color: #2a2a2a;
     color: var(--text-color);
+    min-height: 32px;
 }
 
 .chat-input button {
@@ -427,6 +463,7 @@ input {
     color: white;
     cursor: pointer;
     transition: background-color 0.2s;
+    min-height: 44px;
 }
 
 .chat-input button:hover {
@@ -444,12 +481,9 @@ input {
 }
 
 @keyframes typing {
-
-    0%,
-    100% {
+    0%, 100% {
         opacity: 0.3;
     }
-
     50% {
         opacity: 1;
     }
@@ -457,13 +491,14 @@ input {
 
 .weather-content {
     padding: 10px;
-    font-family: 'Fira Code', monospace;
+    font-family: inherit;
 }
 
 .weather-content pre {
     line-height: 1.2;
     margin: 0;
     padding: 10px 0;
+    overflow-x: auto;
 }
 
 .weather-content p {
@@ -472,20 +507,21 @@ input {
 }
 
 .hackerman-content pre {
-    font-family: 'Fira Code', monospace;
+    font-family: inherit;
     line-height: 1.2;
     margin: 10px 0;
     color: #0F0;
 }
 
 .directory-listing {
-    font-family: 'Fira Code', monospace;
+    font-family: inherit;
     color: #fcfcfa;
 }
 
 .directory-listing p {
     margin: 2px 0;
     padding: 0;
+    word-break: break-all;
 }
 
 .file-content {
@@ -511,7 +547,7 @@ input {
 
 .manual-content li {
     margin: 5px 0;
-    font-family: 'Fira Code', monospace;
+    font-family: inherit;
 }
 
 .hacker-terminal {
@@ -539,15 +575,16 @@ input {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-family: 'Fira Code', monospace;
+    font-family: inherit;
     font-weight: bold;
+    min-height: 44px;
 }
 
 .hacker-terminal .terminal-content {
     flex: 1;
     padding: 16px;
     overflow-y: auto;
-    font-family: 'Fira Code', monospace;
+    font-family: inherit;
     color: #0F0;
     background-color: #000;
 }
@@ -560,10 +597,11 @@ input {
     background: transparent;
     border: none;
     color: #0F0;
-    font-family: 'Fira Code', monospace;
+    font-family: inherit;
     font-size: inherit;
     outline: none;
     caret-color: #0F0;
+    min-height: 24px;
 }
 
 .hacker-terminal .close-button {
@@ -572,7 +610,9 @@ input {
     color: #000;
     font-size: 20px;
     cursor: pointer;
-    padding: 0 4px;
+    padding: 4px 8px;
+    min-height: 32px;
+    min-width: 32px;
 }
 
 .hacker-terminal .close-button:hover {
@@ -592,14 +632,14 @@ input {
 
 .suggestions-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 4px;
 }
 
 .suggestion {
     color: #fcfcfa;
     padding: 2px 4px;
-    font-family: 'Fira Code', monospace;
+    font-family: inherit;
 }
 
 .suggestion:hover {
@@ -638,6 +678,7 @@ input {
 .project-item a {
     color: #78dce8;
     text-decoration: none;
+    word-break: break-all; /* Prevent URL overflow */
 }
 
 .project-item a:hover {
@@ -657,4 +698,199 @@ input {
 .about-content p {
     margin: 1rem 0;
     line-height: 1.5;
+}
+
+/* =================== RESPONSIVE DESIGN =================== */
+
+/* Tablet styles */
+@media (max-width: 1024px) {
+    .app {
+        padding: 0.5rem;
+    }
+    
+    .terminal-container {
+        width: 98%;
+        height: 90vh;
+        border-radius: 10px;
+        min-height: 500px;
+    }
+    
+    .terminal-content {
+        padding: 20px 24px;
+        font-size: 13px;
+    }
+    
+    .ai-chat-box {
+        width: 300px;
+        height: 400px;
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    .snake-game {
+        max-width: 350px;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    body {
+        height: 100vh;
+        height: 100dvh; /* Dynamic viewport height for mobile */
+    }
+    
+    .app {
+        padding: 0;
+        height: 100vh;
+        height: 100dvh;
+    }
+    
+    .terminal-container {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        border-radius: 0;
+        box-shadow: none;
+        min-height: auto;
+    }
+    
+    .terminal-header {
+        padding: 8px 12px;
+        min-height: 40px;
+    }
+    
+    .window-control {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .terminal-content {
+        padding: 12px;
+        font-size: 13px;
+    }
+    
+    .terminal-prompt {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    
+    .prompt-symbol {
+        font-size: 13px;
+    }
+    
+    /* Mobile-optimized ASCII art - shorter version */
+    .welcome-message {
+        font-size: 10px;
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Hide AI chat on mobile to save space */
+    .ai-chat-box {
+        display: none;
+    }
+    
+    /* Mobile-friendly project cards */
+    .project-item {
+        padding: 0.8rem;
+        margin-bottom: 1rem;
+        border-radius: 0 6px 6px 0;
+    }
+    
+    .project-item h4 {
+        font-size: 1rem;
+    }
+    
+    /* Mobile command suggestions */
+    .suggestions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Better touch targets */
+    .retry-button {
+        padding: 14px 24px;
+        font-size: 16px;
+        min-height: 48px;
+    }
+    
+    /* Mobile game optimizations */
+    .snake-game {
+        max-width: 280px;
+        margin: 15px auto;
+    }
+    
+    .matrix-container {
+        height: 200px;
+    }
+    
+    /* Mobile hacker terminal */
+    .hacker-terminal {
+        width: 95%;
+        height: 90vh;
+        top: 5vh;
+        transform: translateX(-50%);
+    }
+    
+    /* Mobile scrollbars */
+    ::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    /* Touch-friendly input */
+    input {
+        font-size: 16px; /* Prevent zoom on iOS */
+        min-height: 24px;
+    }
+    
+    /* Weather content mobile optimization */
+    .weather-content pre {
+        font-size: 10px;
+        overflow-x: auto;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .terminal-content {
+        padding: 8px;
+        font-size: 12px;
+    }
+    
+    .project-item {
+        padding: 0.6rem;
+    }
+    
+    .snake-game {
+        max-width: 250px;
+    }
+    
+    .welcome-message {
+        font-size: 8px;
+    }
+    
+    /* Extremely compact for very small screens */
+    .help-content li {
+        margin: 2px 0;
+    }
+    
+    .terminal-output {
+        font-size: 12px;
+    }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+    .terminal-container {
+        height: 100vh;
+    }
+    
+    .terminal-header {
+        padding: 6px 12px;
+        min-height: 36px;
+    }
+    
+    .window-control {
+        width: 12px;
+        height: 12px;
+    }
 }

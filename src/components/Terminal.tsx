@@ -9,7 +9,7 @@ interface TerminalHistory {
     output: React.ReactNode;
 }
 
-const WELCOME_MESSAGE = `
+const DESKTOP_WELCOME = `
      ██╗ █████╗ ███╗   ███╗██╗███████╗    ███╗   ███╗ ██████╗
      ██║██╔══██╗████╗ ████║██║██╔════╝    ████╗ ████║██╔════╝
      ██║███████║██╔████╔██║██║█████╗      ██╔████╔██║██║     
@@ -30,17 +30,64 @@ Hidden commands await discovery... 🕵️‍♂️
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 `;
 
+const MOBILE_WELCOME = `
+╔══════════════════════════════════════╗
+║        JAMIE MC - PORTFOLIO          ║
+╚══════════════════════════════════════╝
+
+🚀 Welcome to my interactive terminal!
+
+I'm Jamie McCallum, a full-stack developer 
+specializing in React, TypeScript & Go.
+
+📱 Commands: 'help' 'about' 'projects'
+🌤️ Try: 'weather [city]' 
+🕵️ Hidden commands await...
+
+© ${new Date().getFullYear()} Jamie McCallum - Built with ❤️
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+`;
+
+// Detect screen size for responsive welcome message
+const getWelcomeMessage = () => {
+    if (typeof window !== 'undefined') {
+        return window.innerWidth <= 768 ? MOBILE_WELCOME : DESKTOP_WELCOME;
+    }
+    return DESKTOP_WELCOME;
+};
+
 export function Terminal() {
     const [history, setHistory] = useState<TerminalHistory[]>([]);
     const [currentCommand, setCurrentCommand] = useState("");
     const [commandHistory, setCommandHistory] = useState<string[]>([]);
     const [historyIndex, setHistoryIndex] = useState(-1);
+    const [isLoaded, setIsLoaded] = useState(false);
     const terminalRef = useRef<HTMLDivElement>(null);
     const [audio] = useState(() => new Audio("/keypress.mp3"));
 
     // Show welcome message on mount
     useEffect(() => {
-        setHistory([{ command: "", output: WELCOME_MESSAGE }]);
+        // Add small delay to ensure terminal is properly sized before content loads
+        const timer = setTimeout(() => {
+            setHistory([{ command: "", output: getWelcomeMessage() }]);
+            setIsLoaded(true);
+        }, 50);
+        
+        // Update welcome message on window resize
+        const handleResize = () => {
+            setHistory(prev => {
+                if (prev.length > 0 && prev[0].command === "") {
+                    return [{ command: "", output: getWelcomeMessage() }, ...prev.slice(1)];
+                }
+                return prev;
+            });
+        };
+        
+        window.addEventListener('resize', handleResize);
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     const handleCommand = async (command: string) => {
@@ -179,7 +226,7 @@ export function Terminal() {
     }, [history]);
 
     return (
-        <div className="terminal-container">
+        <div className={`terminal-container ${!isLoaded ? 'terminal-loading' : ''}`}>
             <div className="terminal-header">
                 <div className="window-controls">
                     <div className="window-control control-close"></div>
@@ -190,7 +237,18 @@ export function Terminal() {
             <div
                 className="terminal-content"
                 ref={terminalRef}
-                onClick={() => document.querySelector("input")?.focus()}>
+                onClick={() => {
+                    const input = document.querySelector("input");
+                    if (input) {
+                        input.focus();
+                        // Scroll to bottom on mobile tap
+                        if (window.innerWidth <= 768) {
+                            setTimeout(() => {
+                                input.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                            }, 100);
+                        }
+                    }
+                }}>
                 {history.map((entry, index) => (
                     <div key={index}>
                         {entry.command && (
