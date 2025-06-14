@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const { OpenAI } = require('openai');
 const cors = require('cors');
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -13,7 +13,6 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Your AI context/prompt
 const SYSTEM_PROMPT = `You are an AI assistant for a developer's portfolio website. 
 You have knowledge about the developer's background, skills, and projects.
 Be friendly, professional, and concise in your responses.
@@ -23,6 +22,91 @@ You can help visitors learn more about the developer's:
 - Projects
 - Education
 - Contact information`;
+
+// Weather API endpoint
+app.get('/api/weather/:city', async (req, res) => {
+    try {
+        const { city } = req.params;
+        const API_KEY = process.env.WEATHER_API_KEY;
+        const BASE_URL = 'https://api.openweathermap.org/data/2.5';
+
+        if (!API_KEY) {
+            return res.status(500).json({ error: 'Weather API key not configured' });
+        }
+
+        if (!city) {
+            return res.status(400).json({ error: 'City parameter is required' });
+        }
+
+        const response = await fetch(
+            `${BASE_URL}/weather?q=${city}&units=metric&appid=${API_KEY}`
+        );
+
+        if (!response.ok) {
+            if (response.status === 404) {
+                return res.status(404).json({ error: 'City not found' });
+            }
+            throw new Error('Weather data not available');
+        }
+
+        const data = await response.json();
+
+        // Helper function to get weather ASCII art
+        function getWeatherArt(condition) {
+            const weatherArt = {
+                Clear: `
+   \\   /  
+    .-.    
+‒ (   ) ‒  
+    \`-'    
+   /   \\   `,
+                Clouds: `
+    .--.    
+ .-(    ).  
+(___.__)__) 
+            `,
+                Rain: `
+     .-.    
+    (   ).  
+   (___(__)  
+    ʻ ʻ ʻ ʻ  
+   ʻ ʻ ʻ ʻ  `,
+                Snow: `
+     .-.    
+    (   ).  
+   (___(__)  
+    *  *  *  
+   *  *  *   `,
+                Thunderstorm: `
+     .-.    
+    (   ).  
+   (___(__)  
+  ⚡ʻ ʻ⚡ʻ ʻ  
+    ʻ ʻ ʻ   `,
+                Default: `
+    .-.    
+   (   ).  
+  (___(__)  `
+            };
+            return weatherArt[condition] || weatherArt.Default;
+        }
+
+        // Format the response
+        const weatherData = {
+            temp: Math.round(data.main.temp * 9 / 5 + 32), // Convert to Fahrenheit
+            humidity: data.main.humidity,
+            windSpeed: Math.round(data.wind.speed * 2.237), // Convert to mph
+            condition: data.weather[0].main,
+            icon: getWeatherArt(data.weather[0].main),
+            location: data.name
+        };
+
+        res.json(weatherData);
+    } catch (error) {
+        console.error('Weather API error:', error);
+        res.status(500).json({ error: 'Failed to get weather data' });
+    }
+});
 
 app.post('/api/chat', async (req, res) => {
     try {

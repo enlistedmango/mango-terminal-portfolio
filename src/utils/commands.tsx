@@ -74,9 +74,9 @@ export const commands: CommandsMap = {
         <div className="contact-content">
             <h3>Contact Information</h3>
             <ul>
-                <li>📧 Email: your.email@example.com</li>
-                <li>🔗 LinkedIn: linkedin.com/in/yourprofile</li>
-                <li>🐙 GitHub: github.com/yourusername</li>
+                <li>📧 Email: jamiemccallum0@gmail.com</li>
+                <li>🔗 LinkedIn: linkedin.com/in/jamiemccallum1</li>
+                <li>🐙 GitHub: github.com/enlistedmango</li>
             </ul>
         </div>
     ),
@@ -85,10 +85,10 @@ export const commands: CommandsMap = {
         <div className="skills-content">
             <h3>Technical Skills</h3>
             <ul>
-                <li>💻 Languages: JavaScript, TypeScript, Python</li>
-                <li>⚛️ Frontend: React, Vue.js, HTML5, CSS3</li>
-                <li>🔙 Backend: Node.js, Express, Django</li>
-                <li>🗄️ Databases: PostgreSQL, MongoDB</li>
+                <li>💻 Languages: JavaScript, TypeScript, Python, Go</li>
+                <li>⚛️ Frontend: React, HTML5, CSS3</li>
+                <li>🔙 Backend: Go, NestJS</li>
+                <li>🗄️ Databases: PostgreSQL</li>
                 <li>🛠️ Tools: Git, Docker, AWS</li>
             </ul>
         </div>

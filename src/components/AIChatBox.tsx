@@ -26,7 +26,6 @@ export function AIChatBox({ onClose }: AIChatBoxProps) {
     const sendMessage = async (message: string) => {
         if (!message.trim()) return;
 
-        // Add user message
         setMessages((prev) => [...prev, { role: "user", content: message }]);
         setInput("");
         setIsLoading(true);
@@ -46,7 +45,6 @@ export function AIChatBox({ onClose }: AIChatBoxProps) {
             if (!response.ok) {
                 let errorMessage = "Sorry, I'm having trouble connecting right now.";
 
-                // Handle specific error cases
                 if (response.status === 429) {
                     errorMessage = "I've reached my conversation limit. Please try again later.";
                 } else if (response.status === 500) {
