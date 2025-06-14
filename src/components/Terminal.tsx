@@ -10,12 +10,12 @@ interface TerminalHistory {
 }
 
 const DESKTOP_WELCOME = `
-     ██╗ █████╗ ███╗   ███╗██╗███████╗    ███╗   ███╗ ██████╗
-     ██║██╔══██╗████╗ ████║██║██╔════╝    ████╗ ████║██╔════╝
-     ██║███████║██╔████╔██║██║█████╗      ██╔████╔██║██║     
-██   ██║██╔══██║██║╚██╔╝██║██║██╔══╝      ██║╚██╔╝██║██║     
-╚█████╔╝██║  ██║██║ ╚═╝ ██║██║███████╗    ██║ ╚═╝ ██║╚██████╗
- ╚════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝╚══════╝    ╚═╝     ╚═╝ ╚═════╝
+██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
+██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝
+██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗  
+██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝  
+╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
+ ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
 
 Welcome to Jamie McCallum's interactive terminal portfolio! 🚀
 
@@ -31,27 +31,32 @@ Hidden commands await discovery... 🕵️‍♂️
 `;
 
 const MOBILE_WELCOME = `
-╔══════════════════════════════════════╗
-║        JAMIE MC - PORTFOLIO          ║
-╚══════════════════════════════════════╝
+    ╦ ╦╔═╗╦  ╔═╗╔═╗╔╦╗╔═╗
+    ║║║║╣ ║  ║  ║ ║║║║║╣ 
+    ╚╩╝╚═╝╩═╝╚═╝╚═╝╩ ╩╚═╝
 
-🚀 Welcome to my interactive terminal!
+🚀 Jamie McCallum's Portfolio
 
-I'm Jamie McCallum, a full-stack developer 
-specializing in React, TypeScript & Go.
+Full-stack developer specializing in:
+• React & TypeScript
+• Go & Node.js  
+• Modern web technologies
 
-📱 Commands: 'help' 'about' 'projects'
-🌤️ Try: 'weather [city]' 
-🕵️ Hidden commands await...
+📱 Quick commands:
+• help - Show all commands
+• about - Learn about me
+• projects - View my work
+• weather [city] - Live weather
 
-© ${new Date().getFullYear()} Jamie McCallum - Built with ❤️
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🕵️ Hidden features await discovery...
+
+Built with ❤️ using React & TypeScript
 `;
 
 // Detect screen size for responsive welcome message
 const getWelcomeMessage = () => {
     if (typeof window !== 'undefined') {
-        return window.innerWidth <= 768 ? MOBILE_WELCOME : DESKTOP_WELCOME;
+        return window.innerWidth <= 480 ? MOBILE_WELCOME : DESKTOP_WELCOME;
     }
     return DESKTOP_WELCOME;
 };
@@ -61,17 +66,12 @@ export function Terminal() {
     const [currentCommand, setCurrentCommand] = useState("");
     const [commandHistory, setCommandHistory] = useState<string[]>([]);
     const [historyIndex, setHistoryIndex] = useState(-1);
-    const [isLoaded, setIsLoaded] = useState(false);
     const terminalRef = useRef<HTMLDivElement>(null);
     const [audio] = useState(() => new Audio("/keypress.mp3"));
 
     // Show welcome message on mount
     useEffect(() => {
-        // Add small delay to ensure terminal is properly sized before content loads
-        const timer = setTimeout(() => {
-            setHistory([{ command: "", output: getWelcomeMessage() }]);
-            setIsLoaded(true);
-        }, 50);
+        setHistory([{ command: "", output: getWelcomeMessage() }]);
         
         // Update welcome message on window resize
         const handleResize = () => {
@@ -84,10 +84,7 @@ export function Terminal() {
         };
         
         window.addEventListener('resize', handleResize);
-        return () => {
-            clearTimeout(timer);
-            window.removeEventListener('resize', handleResize);
-        };
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     const handleCommand = async (command: string) => {
@@ -226,7 +223,7 @@ export function Terminal() {
     }, [history]);
 
     return (
-        <div className={`terminal-container ${!isLoaded ? 'terminal-loading' : ''}`}>
+        <div className="terminal-container">
             <div className="terminal-header">
                 <div className="window-controls">
                     <div className="window-control control-close"></div>

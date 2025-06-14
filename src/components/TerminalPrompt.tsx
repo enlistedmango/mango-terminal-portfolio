@@ -40,9 +40,7 @@ export function TerminalPrompt({
     };
 
     return (
-        <div
-            className="terminal-prompt"
-            {...(readOnly ? { readonly: true } : {})}>
+        <div className="terminal-prompt">
             <span className="prompt-symbol">visitor@portfolio:~$</span>
             {readOnly ? (
                 <span className="command-text">{command}</span>
