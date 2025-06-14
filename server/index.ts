@@ -62,7 +62,7 @@ app.get('/api/weather/:city', async (req, res) => {
         const data = await response.json();
 
         // Helper function to get weather ASCII art
-        function getWeatherArt(condition) {
+        function getWeatherArt(condition: string) {
             const weatherArt = {
                 Clear: `
    \\   /  
@@ -98,7 +98,7 @@ app.get('/api/weather/:city', async (req, res) => {
    (   ).  
   (___(__)  `
             };
-            return weatherArt[condition] || weatherArt.Default;
+            return weatherArt[condition as keyof typeof weatherArt] || weatherArt.Default;
         }
 
         // Format the response

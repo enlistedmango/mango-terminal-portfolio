@@ -17,17 +17,19 @@ const DESKTOP_WELCOME = `
 ╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
  ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
 
-Welcome to Jamie McCallum's interactive terminal portfolio! 🚀
+Welcome to the baldybuilds interactive terminal portfolio! 🚀
 
-I'm a passionate full-stack developer specializing in React, TypeScript, Go, and modern web technologies.
+I'm Jamie, a passionate junior developer specialising in React, TypeScript, Go, and modern web technologies.
 This terminal interface showcases both my technical skills and love for creative, interactive experiences.
 
-Type 'help' to see available commands • Type 'about' to learn more about me
-Try 'projects' to see my work • Use 'weather [city]' for live weather data
-Hidden commands await discovery... 🕵️‍♂️
+• Type 'help' to see available commands 
+• Type 'about' to learn more about me
+• Type 'projects' to see my work 
+• Use 'weather [city]' for live weather data
+• Hidden commands await discovery... here's your first: snake 🕵️‍♂️
 
-© ${new Date().getFullYear()} Jamie McCallum - Built with ❤️ using React, TypeScript & Express.js
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+© ${new Date().getFullYear()} Jamie McCallum (baldybuilds) - Built with ❤️ using React, TypeScript & Express.js
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 `;
 
 const MOBILE_WELCOME = `
